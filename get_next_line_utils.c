@@ -46,8 +46,6 @@ char	*ft_strjoin(char *s1, char *s2)
 		return (NULL);
 	(void)ft_strlcpy(join, s1, l1 + 1);
 	(void)ft_strlcpy(join + l1, s2, l2 + 1);
-	/*free(s1);
-	free(s2);*/
 	return (join);
 }
 

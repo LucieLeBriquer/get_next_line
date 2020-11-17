@@ -10,6 +10,8 @@ static char	*get_beg(char *s)
 	while (s[i] && s[i] != '\n')
 		i++;
 	beg = malloc((i + 1) * sizeof(char));
+	if (!beg)
+		return (NULL);
 	j = 0;
 	while (j < i)
 	{
@@ -51,15 +53,23 @@ int			get_next_line(int fd, char **line)
 	if (fd < 0)
 		return (-1);
 	if (buff.size == 0)
+	{
 		buff.size = read(fd, buff.content, BUFFER_SIZE);
+		if (buff.size < 0)
+			return (-1);
+	}
 	while (buff.size > 0)
 	{
 		endl = ft_strchr(buff.content, '\n');
 		if (endl != NULL)
 		{
 			begl = get_beg(buff.content);
+			if (!begl)
+				return (-1);
 			buff.size = maj_buffer(buff.content, endl + 1);
 			*line = ft_strjoin(*line, begl);
+			if (!line)
+				return (-1);
 			return (1);
 		}
 		*line = ft_strjoin(*line, buff.content);
@@ -84,21 +94,21 @@ int			main(int argc, char **argv)
 		file = argv[argc - 1];
 		fd = open(file, O_RDONLY);
 	}
-	printf("Buff_size = %d\n\n", BUFFER_SIZE);
+	printf("Buff_size = %d\n", BUFFER_SIZE);
 	r = get_next_line(fd, &line);
-	printf("line 1 = [%s]\tret = %d\n\n", line, r);
+	printf("line 1 = [%s]\tret = %d\n", line, r);
 	r = get_next_line(fd, &line);
-	printf("line 2 = [%s]\tret = %d\n\n", line, r);
+	printf("line 2 = [%s]\tret = %d\n", line, r);
 	r = get_next_line(fd, &line);
-	printf("line 3 = [%s]\tret = %d\n\n", line, r);
+	printf("line 3 = [%s]\tret = %d\n", line, r);
 	r = get_next_line(fd, &line);
-	printf("line 4 = [%s]\tret = %d\n\n", line, r);
+	printf("line 4 = [%s]\tret = %d\n", line, r);
 	r = get_next_line(fd, &line);
-	printf("line 5 = [%s]\tret = %d\n\n", line, r);
+	printf("line 5 = [%s]\tret = %d\n", line, r);
 	r = get_next_line(fd, &line);
-	printf("line 6 = [%s]\tret = %d\n\n", line, r);
+	printf("line 6 = [%s]\tret = %d\n", line, r);
 	r = get_next_line(-1, &line);
-	printf("line 0 = [%s]\tret = %d\n\n", line, r);
+	printf("line 0 = [%s]\tret = %d\n", line, r);
 	close(fd);
 	return 0;
 }
