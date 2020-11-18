@@ -52,6 +52,8 @@ int			get_next_line(int fd, char **line)
 	char			*begl;
 	int				i;
 
+	if (!line)
+		return (-1);
 	*line = ft_strdup("");
 	if (fd < 0)
 		return (-1);
@@ -59,7 +61,10 @@ int			get_next_line(int fd, char **line)
 	{
 		buff.size = read(fd, buff.content, BUFFER_SIZE);
 		if (buff.size < 0)
+		{
+			*line = 0;
 			return (-1);
+		}
 	}
 	while (buff.size > 0)
 	{
@@ -83,7 +88,10 @@ int			get_next_line(int fd, char **line)
 		*line = ft_strjoin(*line, buff.content);
 		buff.size = read(fd, buff.content, BUFFER_SIZE);
 		if (buff.size < 0)
+		{
+			*line = 0;
 			return (-1);
+		}
 	}
 	return (0);
 }
