@@ -43,16 +43,19 @@ static int	maj_buffer(char *buf, char *endl)
 	return (j);
 }
 
+#include <stdio.h>
+
 int			get_next_line(int fd, char **line)
 {
 	static buffer	buff;
 	char			*endl;
 	char			*begl;
+	int				i;
 
 	*line = ft_strdup("");
 	if (fd < 0)
 		return (-1);
-	if (buff.size == 0)
+	if (buff.size <= 0)
 	{
 		buff.size = read(fd, buff.content, BUFFER_SIZE);
 		if (buff.size < 0)
@@ -60,55 +63,27 @@ int			get_next_line(int fd, char **line)
 	}
 	while (buff.size > 0)
 	{
+		if (buff.size != BUFFER_SIZE)
+		{
+			i = buff.size - 1;
+			while (++i <= BUFFER_SIZE)
+				buff.content[i] = '\0';
+			i++;
+		}
 		endl = ft_strchr(buff.content, '\n');
-		if (endl != NULL)
+		if (endl)
 		{
 			begl = get_beg(buff.content);
-			if (!begl)
-				return (-1);
 			buff.size = maj_buffer(buff.content, endl + 1);
 			*line = ft_strjoin(*line, begl);
-			if (!line)
+			if (!(*line))
 				return (-1);
 			return (1);
 		}
 		*line = ft_strjoin(*line, buff.content);
 		buff.size = read(fd, buff.content, BUFFER_SIZE);
+		if (buff.size < 0)
+			return (-1);
 	}
-	*line = ft_strdup("");
-	buff.content[0] = '\0';
 	return (0);
-}
-
-int			main(int argc, char **argv)
-{
-	int		fd;
-	char	*line;
-	char	*file;
-	int		r;
-
-	if (argc == 1)
-		fd = 0;
-	else
-	{
-		file = argv[argc - 1];
-		fd = open(file, O_RDONLY);
-	}
-	printf("Buff_size = %d\n", BUFFER_SIZE);
-	r = get_next_line(fd, &line);
-	printf("line 1 = [%s]\tret = %d\n", line, r);
-	r = get_next_line(fd, &line);
-	printf("line 2 = [%s]\tret = %d\n", line, r);
-	r = get_next_line(fd, &line);
-	printf("line 3 = [%s]\tret = %d\n", line, r);
-	r = get_next_line(fd, &line);
-	printf("line 4 = [%s]\tret = %d\n", line, r);
-	r = get_next_line(fd, &line);
-	printf("line 5 = [%s]\tret = %d\n", line, r);
-	r = get_next_line(fd, &line);
-	printf("line 6 = [%s]\tret = %d\n", line, r);
-	r = get_next_line(-1, &line);
-	printf("line 0 = [%s]\tret = %d\n", line, r);
-	close(fd);
-	return 0;
 }
