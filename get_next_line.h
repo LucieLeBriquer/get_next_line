@@ -15,11 +15,9 @@ typedef struct
 	char	content[BUFFER_SIZE + 1];
 }			buffer;
 
+char    *join_and_realloc(char *s, char *buf, int size);
+int		find_char_index(char *str, char c);
 int		get_next_line(int fd, char **line);
-size_t	ft_strlen(const char *s);
-size_t	ft_strlcpy(char *dst, const char *src, size_t size);
-char	*ft_strjoin(char *s1, char *s2);
-char	*ft_strchr(char *s, int c);
-char	*ft_strdup(const char *s);
+char    *ft_strndup(char *str, int n);
 
 #endif
