@@ -6,7 +6,7 @@
 /*   By: lle-briq <lle-briq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 17:54:41 by lle-briq          #+#    #+#             */
-/*   Updated: 2020/11/19 17:56:05 by lle-briq         ###   ########.fr       */
+/*   Updated: 2020/11/19 18:29:02 by lle-briq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 
 static int	check_errors(int fd, char **line, int size, int is_start)
 {
+	if (BUFFER_SIZE <= 0)
+		return (-1);
 	if (is_start)
 		*line = malloc(sizeof(char));
 	if (!(*line))
