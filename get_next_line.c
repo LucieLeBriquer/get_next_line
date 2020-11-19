@@ -1,8 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: lle-briq <lle-briq@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/11/19 17:54:41 by lle-briq          #+#    #+#             */
+/*   Updated: 2020/11/19 17:56:05 by lle-briq         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 #include <stdio.h>
 
-static int	check_errors(int fd, char **line, int size)
+static int	check_errors(int fd, char **line, int size, int is_start)
 {
+	if (is_start)
+		*line = malloc(sizeof(char));
 	if (!(*line))
 		return (0);
 	if (size < 0 || fd < 0)
@@ -10,6 +24,8 @@ static int	check_errors(int fd, char **line, int size)
 		*line = 0;
 		return (0);
 	}
+	if (is_start)
+		(*line)[0] = '\0';
 	return (1);
 }
 
@@ -34,15 +50,11 @@ int			maj_buffer(char *buf, int i)
 
 int			get_next_line(int fd, char **line)
 {
-	static buffer	buff;
+	static t_buffer	buff;
 	int				i;
 
-	if (!line)
+	if (!line || !check_errors(fd, line, 1, 1))
 		return (-1);
-	*line = malloc(sizeof(char));
-	if (!check_errors(fd, line, 1))
-		return (-1);
-	(*line)[0] = '\0';
 	if (buff.size <= 0)
 	{
 		buff.size = read(fd, buff.content, BUFFER_SIZE);
@@ -55,11 +67,11 @@ int			get_next_line(int fd, char **line)
 		{
 			*line = join_and_realloc(*line, buff.content, i);
 			buff.size = maj_buffer(buff.content, i);
-			return (check_errors(fd, line, 1));
+			return (check_errors(fd, line, 1, 0));
 		}
 		*line = join_and_realloc(*line, buff.content, BUFFER_SIZE + 1);
 		buff.size = read(fd, buff.content, BUFFER_SIZE);
 		buff.content[buff.size < 0 ? 0 : buff.size] = '\0';
 	}
-	return (check_errors(fd, line, buff.size) - 1);
+	return (check_errors(fd, line, buff.size, 0) - 1);
 }
