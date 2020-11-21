@@ -6,7 +6,7 @@
 /*   By: lle-briq <lle-briq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 17:54:58 by lle-briq          #+#    #+#             */
-/*   Updated: 2020/11/21 15:21:50 by lle-briq         ###   ########.fr       */
+/*   Updated: 2020/11/21 15:25:46 by lle-briq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define GET_NEXT_LINE_BONUS_H
 # include <fcntl.h>
 # include <unistd.h>
+# include <stdlib.h>
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 32
 # endif
