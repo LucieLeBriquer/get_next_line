@@ -6,7 +6,7 @@
 /*   By: lle-briq <lle-briq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 17:54:58 by lle-briq          #+#    #+#             */
-/*   Updated: 2020/11/19 17:56:52 by lle-briq         ###   ########.fr       */
+/*   Updated: 2020/11/21 13:47:59 by lle-briq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@
 # include <unistd.h>
 # include <string.h>
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 5
+#  define BUFFER_SIZE 32
+# endif
+# ifndef FD_MAX
+#  define FD_MAX 256
 # endif
 
 typedef struct

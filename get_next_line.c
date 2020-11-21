@@ -6,7 +6,7 @@
 /*   By: lle-briq <lle-briq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 17:54:41 by lle-briq          #+#    #+#             */
-/*   Updated: 2020/11/19 18:29:02 by lle-briq         ###   ########.fr       */
+/*   Updated: 2020/11/21 13:47:38 by lle-briq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,28 +52,28 @@ int			maj_buffer(char *buf, int i)
 
 int			get_next_line(int fd, char **line)
 {
-	static t_buffer	buff;
+	static t_buffer	buff[FD_MAX];
 	int				i;
 
 	if (!line || !check_errors(fd, line, 1, 1))
 		return (-1);
-	if (buff.size <= 0)
+	if (buff[fd].size <= 0)
 	{
-		buff.size = read(fd, buff.content, BUFFER_SIZE);
-		buff.content[buff.size < 0 ? 0 : buff.size] = '\0';
+		buff[fd].size = read(fd, buff[fd].content, BUFFER_SIZE);
+		buff[fd].content[buff[fd].size < 0 ? 0 : buff[fd].size] = '\0';
 	}
-	while (buff.size > 0)
+	while (buff[fd].size > 0)
 	{
-		i = find_char_index(buff.content, '\n');
+		i = find_char_index(buff[fd].content, '\n');
 		if (i >= 0)
 		{
-			*line = join_and_realloc(*line, buff.content, i);
-			buff.size = maj_buffer(buff.content, i);
+			*line = join_and_realloc(*line, buff[fd].content, i);
+			buff[fd].size = maj_buffer(buff[fd].content, i);
 			return (check_errors(fd, line, 1, 0));
 		}
-		*line = join_and_realloc(*line, buff.content, BUFFER_SIZE + 1);
-		buff.size = read(fd, buff.content, BUFFER_SIZE);
-		buff.content[buff.size < 0 ? 0 : buff.size] = '\0';
+		*line = join_and_realloc(*line, buff[fd].content, BUFFER_SIZE + 1);
+		buff[fd].size = read(fd, buff[fd].content, BUFFER_SIZE);
+		buff[fd].content[buff[fd].size < 0 ? 0 : buff[fd].size] = '\0';
 	}
-	return (check_errors(fd, line, buff.size, 0) - 1);
+	return (check_errors(fd, line, buff[fd].size, 0) - 1);
 }
