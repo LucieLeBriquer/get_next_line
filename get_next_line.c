@@ -6,7 +6,7 @@
 /*   By: lle-briq <lle-briq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 17:54:41 by lle-briq          #+#    #+#             */
-/*   Updated: 2020/11/22 17:57:26 by lle-briq         ###   ########.fr       */
+/*   Updated: 2020/11/23 20:13:16 by lle-briq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static int	check_errors(int fd, char **line, int size, int is_start)
 		return (0);
 	if (size < 0 || fd < 0)
 	{
+		free(*line);
 		*line = 0;
 		return (0);
 	}
