@@ -6,7 +6,7 @@
 /*   By: lle-briq <lle-briq@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/19 17:54:58 by lle-briq          #+#    #+#             */
-/*   Updated: 2020/11/21 15:25:46 by lle-briq         ###   ########.fr       */
+/*   Updated: 2020/12/30 15:04:14 by lle-briq         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,14 @@
 #  define FD_MAX 256
 # endif
 
-typedef struct
+typedef struct s_buffer
 {
 	int		size;
 	char	content[BUFFER_SIZE + 1];
 }			t_buffer;
 
-char		*join_and_realloc(char *s, char *buf, int size);
-char		*ft_strndup(char *str, int n);
-int			find_char_index(char *str, char c);
-int			get_next_line(int fd, char **line);
+char	*join_and_realloc(char *s, char *buf, int size);
+int		find_char_index(char *str, char c);
+int		get_next_line(int fd, char **line);
 
 #endif
